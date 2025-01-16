@@ -1,4 +1,5 @@
 export default {
-  navigationBarTitleText: 'Taro-hooks',
+  navigationStyle: "custom",
   enableShareAppMessage: true,
+  navigator: "custom",
 };

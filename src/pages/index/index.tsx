@@ -1,45 +1,31 @@
-import React, { useCallback } from "react";
-import { View, Text, Button, Image } from "@tarojs/components";
-import { useEnv, useNavigationBar, useModal, useToast } from "taro-hooks";
-import logo from "./hook.png";
+import { View } from "@tarojs/components";
+import { AvatarCanvas } from "./components/AvatarCanvas";
+import { Controls } from "./components/Controls";
+import { Editor } from "./components/Editor";
+import { FeaturePanel } from "./components/FeaturePanel";
 
-import './index.scss'
+import "./index.scss";
 
 const Index = () => {
-  const env = useEnv();
-  const { setTitle } = useNavigationBar({ title: "Taro Hooks" });
-  const showModal = useModal({
-    title: "Taro Hooks Canary!",
-    showCancel: false,
-    confirmColor: "#8c2de9",
-    confirmText: "支持一下"
-  });
-  const { show } = useToast({ mask: true });
-
-  const handleModal = useCallback(() => {
-    showModal({ content: "不如给一个star⭐️!" }).then(() => {
-      show({ title: "点击了支持!" });
-    });
-  }, [show, showModal]);
-
   return (
     <View className="wrapper">
-      <Image className="logo" src={logo} />
-      <Text className="title">为Taro而设计的Hooks Library</Text>
-      <Text className="desc">
-        目前覆盖70%官方API. 抹平部分API在H5端短板. 提供近40+Hooks!
-        并结合ahook适配Taro! 更多信息可以查看新版文档: https://next-version-taro-hooks.vercel.app/
-      </Text>
-      <View className="list">
-        <Text className="label">运行环境</Text>
-        <Text className="note">{env}</Text>
+      <View className="text-2xl h-[4vh] mt-[6vh] mb-[2vh] text-center text-white font-mono">
+        可爱的我
       </View>
-      <Button className="button" onClick={() => setTitle("Taro Hooks Nice!")}>
-        设置标题
-      </Button>
-      <Button className="button" onClick={handleModal}>
-        使用Modal
-      </Button>
+      <View className="flex justify-center w-full max-h-[34vh] overflow-scroll">
+        <AvatarCanvas />
+        <Editor />
+      </View>
+
+      <View className="flex max-h-[50vh] mt-[2vh]">
+        <FeaturePanel />
+      </View>
+      {/* <View className="w-full fixed top-[44vh] max-h-[8vh]">
+        <Controls />
+      </View> */}
+      <View className="w-full fixed bottom-[1.2vh] max-h-[8vh]">
+        <Controls />
+      </View>
     </View>
   );
 };

@@ -1,12 +1,13 @@
 /// <reference types="@tarojs/taro" />
 /// <reference types="@taro-hooks/plugin-react" />
+/// <reference types="taro-hooks" />
+
 import "@taro-hooks/plugin-react";
 
 declare module "*.png";
 declare module "*.gif";
 declare module "*.jpg";
 declare module "*.jpeg";
-declare module "*.svg";
 declare module "*.css";
 declare module "*.less";
 declare module "*.scss";

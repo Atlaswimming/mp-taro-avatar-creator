@@ -2,10 +2,10 @@
   "miniprogramRoot": "dist/",
   "projectname": "mp-taro-avatar-creator",
   "description": "",
-  "appid": "touristappid",
+  "appid": "wx171bb8dcb75b100b",
   "setting": {
     "urlCheck": true,
-    "es6": false,
+    "es6": true,
     "enhance": false,
     "compileHotReLoad": false,
     "postcss": false,
