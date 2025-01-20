@@ -1,25 +1,25 @@
-import { ScrollView, Text, View, Image } from "@tarojs/components";
+import { Image, ScrollView, Text, View } from "@tarojs/components";
 import { useState } from "react";
-import Taro from "@tarojs/taro";
-import { useAvatarStore } from "../../../store/avatarStore";
+import {
+  beards,
+  borders,
+  eyebrows,
+  eyes,
+  faces,
+  mouths,
+  noses,
+  shapes,
+  seasons,
+} from "src/constants/features";
+import Forbid from "../../../assets/icons/forbid.svg";
+import Selected from "../../../assets/icons/selected.svg";
 import {
   colorsPalette1,
   colorsPalette2,
   colorsPalette3,
   colorsPalette4,
 } from "../../../constants/colorPalettes";
-import Selected from "../../../assets/icons/selected.svg";
-import Forbid from "../../../assets/icons/forbid.svg";
-import {
-  shapes,
-  borders,
-  faces,
-  eyebrows,
-  eyes,
-  mouths,
-  noses,
-  beards,
-} from "src/constants/features";
+import { useAvatarStore } from "../../../store/avatarStore";
 import { FeatureRender } from "./FeatureRender";
 
 const colorsPalettes = [
@@ -72,13 +72,20 @@ export const FeaturePanel = () => {
       mouth_shape,
       nose_shape,
       beard_shape,
+      season_shape,
     },
   } = useAvatarStore();
 
   const [activeTab, setActiveTab] = useState(0);
   const [viewId, setViewId] = useState<string>("");
 
-  const tabItems = ["背景", "脸型", "五官", "饰品", "服饰"];
+  const tabItems = [
+    "季节限定",
+    "背景",
+    "脸型",
+    "五官",
+    // "饰品", "服饰"
+  ];
 
   const handleScroll = (event) => {
     const scrollTop = event.detail.scrollTop;
@@ -100,7 +107,7 @@ export const FeaturePanel = () => {
   return (
     <View className="flex w-full h-[49vh] py-[2vh]">
       <ScrollView
-        className="w-[12vw] shrink-0 h-full"
+        className="w-[16vw] shrink-0 h-full"
         scrollY
         scrollWithAnimation
       >
@@ -113,7 +120,7 @@ export const FeaturePanel = () => {
               }`}
               onClick={() => scrollToTab(index)} // 添加点击事件
             >
-              <Text>{item}</Text>
+              <Text className="block w-full px-3">{item}</Text>
             </View>
           );
         })}
@@ -136,14 +143,16 @@ export const FeaturePanel = () => {
               className="min-h-20 w-full flex flex-col items-center justify-start px-2"
             >
               <Text className="texts-left w-full">{item}</Text>
+              {item === "季节限定" &&
+                FeatureRender("", seasons, "season_shape", season_shape)}
               {item === "背景" && (
-                <View className="w-full min-h-20 flex items-center flex-col overflow-x-scroll">
-                  <View className="w-full min-h-20 flex items-center justify-start overflow-x-scroll">
+                <View className="w-full min-h-16 flex items-center flex-col overflow-x-scroll">
+                  <View className="w-full min-h-16 flex items-center justify-start overflow-x-scroll">
                     {shapes.map((type, index) => {
                       return (
                         <View
                           key={index}
-                          className={`relative w-16 h-16 shrink-0 grow-0 flex flex-wrap items-center justify-center py-1 mr-4 bg-stone-200/20 rounded-md`}
+                          className={`relative w-14 h-14 shrink-0 grow-0 flex flex-wrap items-center justify-center py-1 mr-2 bg-stone-200/20 rounded-md`}
                           onClick={() => {
                             setFeature(
                               "shape_key",
@@ -157,11 +166,11 @@ export const FeaturePanel = () => {
                             <Image src={Forbid} className="size-8 absolute" />
                           ) : (
                             <View
-                              className={`w-8 h-8 bg-stone-50 ${
+                              className={`w-6 h-6 bg-stone-50 ${
                                 type === "circle"
                                   ? "rounded-full"
                                   : type === "rounded"
-                                  ? "rounded-lg"
+                                  ? "rounded-md"
                                   : "rounded-none"
                               } 
                               `}
@@ -178,7 +187,7 @@ export const FeaturePanel = () => {
                     })}
                   </View>
 
-                  <View className="w-full h-8 flex flex-no-wrap justify-center my-2">
+                  <View className="w-full h-4 flex flex-no-wrap justify-center my-1">
                     {colorsPaletteRender(
                       colorsPalettes[0],
                       shape_color || colorsPalettes[0][0],
@@ -188,13 +197,13 @@ export const FeaturePanel = () => {
                     )}
                   </View>
 
-                  <Text className="texts-left w-full">边框</Text>
-                  <View className="w-full min-h-20 flex items-center justify-start overflow-x-scroll">
+                  <Text className="texts-left w-full mt-2">边框</Text>
+                  <View className="w-full min-h-16 flex items-center justify-start overflow-x-scroll">
                     {borders.map((type, index) => {
                       return (
                         <View
                           key={index}
-                          className={`relative w-16 h-16 shrink-0 grow-0 flex flex-wrap items-center justify-center py-1 mr-4 bg-stone-200/20 rounded-m`}
+                          className={`relative w-12 h-12 shrink-0 grow-0 flex flex-wrap items-center justify-center py-1 mr-2 bg-stone-200/20 rounded-m`}
                           onClick={() => {
                             setFeature(
                               "border_type",
@@ -231,7 +240,7 @@ export const FeaturePanel = () => {
                       );
                     })}
                   </View>
-                  <View className="w-full h-8 flex flex-no-wrap justify-center my-2">
+                  <View className="w-full h-4 flex flex-no-wrap justify-center my-1">
                     {colorsPaletteRender(
                       colorsPalettes[0],
                       border_color || colorsPalettes[0][0],

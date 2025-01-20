@@ -10,10 +10,10 @@ const Index = () => {
   return (
     <View className="wrapper">
       <View className="text-2xl h-[4vh] mt-[6vh] mb-[2vh] text-center text-white font-mono">
-        可爱的我
+        {/* 可爱的我 */}
       </View>
       <View className="flex justify-center w-full max-h-[34vh] overflow-scroll">
-        <AvatarCanvas />
+        <AvatarCanvas type="abstract" />
         <Editor />
       </View>
 

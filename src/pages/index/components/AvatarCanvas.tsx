@@ -9,7 +9,16 @@ import {
   faces,
   mouths,
   noses,
+  seasons,
 } from "../../../constants/features";
+import {
+  eyebrows as abstractEyebrows,
+  eyes as abstractEyes,
+  faces as abstractFaces,
+  mouths as abstractMouths,
+  noses as abstractNoses,
+  decoration as abstractDecoration,
+} from "../../../constants/abstractFeatures";
 import { useAvatarStore } from "../../../store/avatarStore";
 
 const loadImg = (url, canvas) =>
@@ -24,7 +33,7 @@ const loadImg = (url, canvas) =>
     img.src = url;
   });
 
-export const AvatarCanvas = () => {
+export const AvatarCanvas = ({ type }) => {
   const canvasRef = useRef<Taro.CanvasContext>(null);
   const {
     features: {
@@ -36,8 +45,10 @@ export const AvatarCanvas = () => {
       eye_shape = "",
       eyebrow_shape = "",
       mouth_shape = "",
+      decoration_shape = "",
       nose_shape = "",
       beard_shape = "",
+      season_shape = "",
     },
     isFlipped = false,
     featuresOffset,
@@ -153,129 +164,206 @@ export const AvatarCanvas = () => {
           ctx.closePath();
         }
 
-        const currentFace = faces.find((type) => type.name === face_shape);
-        const currentEyebrow = eyebrows.find(
-          (type) => type.name === eyebrow_shape
-        );
-        const currentEye = eyes.find((type) => type.name === eye_shape);
-        const currentNose = noses.find((type) => type.name === nose_shape);
-        const currentMouth = mouths.find((type) => type.name === mouth_shape);
-        const currentBeard = beards.find((type) => type.name === beard_shape);
+        if (type === "abstract") {
+          const currentFace = abstractFaces.find(
+            (type) => type.name === face_shape
+          );
+          const currentEyebrow = abstractEyebrows.find(
+            (type) => type.name === eyebrow_shape
+          );
+          const currentEye = abstractEyes.find(
+            (type) => type.name === eye_shape
+          );
+          const currentNose = abstractNoses.find(
+            (type) => type.name === nose_shape
+          );
+          const currentMouth = abstractMouths.find(
+            (type) => type.name === mouth_shape
+          );
+          const currentDecoration = abstractDecoration.find(
+            (type) => type.name === decoration_shape
+          );
+          Promise.all([
+            currentFace && loadImg(currentFace?.value, canvas),
+            currentEyebrow && loadImg(currentEyebrow?.value, canvas),
+            currentEye && loadImg(currentEye?.value, canvas),
+            currentNose && loadImg(currentNose?.value, canvas),
+            currentMouth && loadImg(currentMouth?.value, canvas),
+            currentDecoration && loadImg(currentDecoration?.value, canvas),
+          ]).then(
+            ([
+              face,
+              eyebrow = null,
+              eye = null,
+              nose = null,
+              mouth = null,
+              decoration = null,
+            ]) => {
+              const baseSize = 150;
 
-        Promise.all([
-          currentFace && loadImg(currentFace?.value, canvas),
-          currentEyebrow && loadImg(currentEyebrow?.value, canvas),
-          currentEye && loadImg(currentEye?.value, canvas),
-          currentNose && loadImg(currentNose?.value, canvas),
-          currentMouth && loadImg(currentMouth?.value, canvas),
-          currentBeard && loadImg(currentBeard?.value, canvas),
-        ]).then(
-          ([
-            face,
-            eyebrow = null,
-            eye = null,
-            nose = null,
-            mouth = null,
-            beard = null,
-          ]) => {
-            const baseSize = 150;
+              // Draw face base
+              if (face && face_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.face_shape;
+                const size = baseSize * zoom;
+                const X = center - size / 2 + x;
+                const Y = center - size / 2 + y;
+                ctx.drawImage(face, X, Y, size, size);
+              }
 
-            // Draw face base
-            if (face && face_shape !== "none") {
-              const { x, y, zoom } = featuresOffset.face_shape;
-              const size = baseSize * zoom;
-              const X = center - size / 2 + x;
-              const Y = center - size / 2 + y;
-              ctx.drawImage(face, X, Y, size, size);
+              // Draw eyebrow base
+              if (eyebrow && eyebrow_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.eyebrow_shape;
+                const size = baseSize * zoom;
+                const X = center - size / 2 + x;
+                const Y = center - size / 2 + y;
+                ctx.drawImage(eyebrow, X, Y, size, size);
+              }
+
+              // Draw eye base
+              if (eye && eye_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.eye_shape;
+                const size = baseSize * zoom;
+                const X = center - size / 2 + x;
+                const Y = center - size / 2 + y;
+                ctx.drawImage(eye, X, Y, size, size);
+              }
+
+              // Draw nose base
+              if (nose && nose_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.nose_shape;
+                const size = baseSize * zoom;
+                const X = center - size / 2 + x;
+                const Y = center - size / 2 + y;
+                ctx.drawImage(nose, X, Y, size, size);
+              }
+
+              // Draw mouth base
+              if (mouth && mouth_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.mouth_shape;
+                const size = baseSize * zoom;
+                const X = center - size / 2 + x;
+                const Y = center - size / 2 + y;
+                ctx.drawImage(mouth, X, Y, size, size);
+              }
+
+              // Draw beard base
+              if (decoration && decoration_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.decoration_shape;
+                const size = baseSize * zoom * 1.06;
+                const X = center - size / 2 + x;
+                const Y = center - size / 2 + y + 8;
+                ctx.drawImage(decoration, X, Y, size, size);
+              }
             }
+          );
+        } else {
+          const currentFace = faces.find((type) => type.name === face_shape);
+          const currentEyebrow = eyebrows.find(
+            (type) => type.name === eyebrow_shape
+          );
+          const currentEye = eyes.find((type) => type.name === eye_shape);
+          const currentNose = noses.find((type) => type.name === nose_shape);
+          const currentMouth = mouths.find((type) => type.name === mouth_shape);
+          const currentBeard = beards.find((type) => type.name === beard_shape);
+          const currentSeason = seasons.find(
+            (type) => type.name === season_shape
+          );
 
-            // Draw eyebrow base
-            if (eyebrow && eyebrow_shape !== "none") {
-              const { x, y, zoom } = featuresOffset.eyebrow_shape;
-              const size = baseSize * zoom;
-              const X = center - size / 2 + x;
-              const Y = center - size / 2 + y;
-              ctx.drawImage(eyebrow, X, Y, size, size);
-            }
+          Promise.all([
+            currentFace && loadImg(currentFace?.value, canvas),
+            currentEyebrow && loadImg(currentEyebrow?.value, canvas),
+            currentEye && loadImg(currentEye?.value, canvas),
+            currentNose && loadImg(currentNose?.value, canvas),
+            currentMouth && loadImg(currentMouth?.value, canvas),
+            currentBeard && loadImg(currentBeard?.value, canvas),
+            currentSeason && loadImg(currentSeason?.value, canvas),
+          ]).then(
+            ([
+              face,
+              eyebrow = null,
+              eye = null,
+              nose = null,
+              mouth = null,
+              beard = null,
+              season = null,
+            ]) => {
+              const baseSize = 150;
 
-            // Draw eye base
-            if (eye && eye_shape !== "none") {
-              const { x, y, zoom } = featuresOffset.eye_shape;
-              const size = baseSize * zoom;
-              const X = center - size / 2 + x;
-              const Y = center - size / 2 + y;
-              ctx.drawImage(eye, X, Y, size, size);
-            }
+              // Draw face base
+              if (face && face_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.face_shape;
+                const size = baseSize * zoom;
+                const X = center - size / 2 + x;
+                const Y = center - size / 2 + y;
+                ctx.drawImage(face, X, Y, size, size);
+              }
 
-            // Draw nose base
-            if (nose && nose_shape !== "none") {
-              const { x, y, zoom } = featuresOffset.nose_shape;
-              const size = baseSize * zoom;
-              const X = center - size / 2 + x;
-              const Y = center - size / 2 + y;
-              ctx.drawImage(nose, X, Y, size, size);
-            }
+              // Draw eyebrow base
+              if (eyebrow && eyebrow_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.eyebrow_shape;
+                const size = baseSize * zoom;
+                const X = center - size / 2 + x;
+                const Y = center - size / 2 + y;
+                ctx.drawImage(eyebrow, X, Y, size, size);
+              }
 
-            // Draw mouth base
-            if (mouth && mouth_shape !== "none") {
-              // 控制嘴巴的位置，如果有 beard_1, 向下移动一些
-              // let mouthY = [
-              //   "beard_1_1",
-              //   "beard_1_2",
-              //   "beard_2_1",
-              //   "beard_2_2",
-              // ].includes(beard_shape)
-              //   ? 72
-              //   : baseOffsetY;
-              // if (
-              //   face_shape.includes("face_1") ||
-              //   face_shape.includes("face_2") ||
-              //   face_shape.includes("face_5")
-              // ) {
-              //   mouthY += 2;
+              // Draw eye base
+              if (eye && eye_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.eye_shape;
+                const size = baseSize * zoom;
+                const X = center - size / 2 + x;
+                const Y = center - size / 2 + y;
+                ctx.drawImage(eye, X, Y, size, size);
+              }
+
+              // Draw nose base
+              if (nose && nose_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.nose_shape;
+                const size = baseSize * zoom;
+                const X = center - size / 2 + x;
+                const Y = center - size / 2 + y;
+                ctx.drawImage(nose, X, Y, size, size);
+              }
+
+              // Draw mouth base
+              if (mouth && mouth_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.mouth_shape;
+                const size = baseSize * zoom;
+                const X = center - size / 2 + x;
+                const Y = center - size / 2 + y;
+                ctx.drawImage(mouth, X, Y, size, size);
+              }
+
+              // Draw beard base
+              if (beard && beard_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.beard_shape;
+                const size = baseSize * zoom * 1.06;
+                const X = center - size / 2 + x;
+                const Y = center - size / 2 + y + 8;
+                ctx.drawImage(beard, X, Y, size, size);
+              }
+
+              // Draw 季节限定
+              if (season && season_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.season_shape;
+                const size = baseSize * zoom;
+                let seasonOffset = 20;
+                if (currentSeason?.name === "snake") {
+                  seasonOffset = -20;
+                }
+                const X = center - size / 2 + x - seasonOffset;
+                const Y = center - size / 2 + y - seasonOffset;
+                ctx.drawImage(season, X, Y, size, size);
+              }
+
+              // Apply mirror effect if needed
+              // if (isFlipped) {
+              //   ctx.translate(size, 0);
+              //   ctx.scale(-1, 1);
               // }
-              // if (currentFeature === currentMouth?.name) {
-              //   baseOffsetX += featureOffsetX;
-              //   baseOffsetY = mouthY + featureOffsetY;
-              //   baseSize *= featureZoom;
-              // }
-              const { x, y, zoom } = featuresOffset.mouth_shape;
-              const size = baseSize * zoom;
-              const X = center - size / 2 + x;
-              const Y = center - size / 2 + y;
-              ctx.drawImage(mouth, X, Y, size, size);
             }
-
-            // Draw beard base
-            if (beard && beard_shape !== "none") {
-              let beardY = center - 72;
-              // 特殊处理圆胡子
-              // if (beard_shape === "beard_2_1" || beard_shape === "beard_2_2") {
-              //   if (
-              //     face_shape.includes("face_1") ||
-              //     face_shape.includes("face_2")
-              //   ) {
-              //     beardY += 4;
-              //   } else if (face_shape.includes("face_5")) {
-              //     beardY += 0;
-              //   } else {
-              //     beardY += 8;
-              //   }
-              // }
-              const { x, y, zoom } = featuresOffset.beard_shape;
-              const size = baseSize * zoom;
-              const X = center - size / 2 + x;
-              const Y = center - size / 2 + y;
-              ctx.drawImage(beard, X, Y, size, size);
-            }
-
-            // Apply mirror effect if needed
-            // if (isFlipped) {
-            //   ctx.translate(size, 0);
-            //   ctx.scale(-1, 1);
-            // }
-          }
-        );
+          );
+        }
       });
   }, [
     isFlipped,
@@ -289,6 +377,7 @@ export const AvatarCanvas = () => {
     nose_shape,
     mouth_shape,
     beard_shape,
+    season_shape,
     currentFeature,
     featuresOffset,
     currentFeature,

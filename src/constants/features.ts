@@ -4,6 +4,7 @@ export type FeatureType = Array<{
   name: string;
   value: string;
 }>;
+
 import face_1_1 from "../assets/features/face_1_1.png";
 import face_1_2 from "../assets/features/face_1_2.png";
 import face_2_1 from "../assets/features/face_2_1.png";
@@ -22,12 +23,13 @@ import face_7_1 from "../assets/features/face_7_1.png";
 import face_7_2 from "../assets/features/face_7_2.png";
 import face_8_1 from "../assets/features/face_8_1.png";
 import face_9_1 from "../assets/features/face_9_1.png";
-
+import face_10_1 from "../assets/features/face_10_1.png";
 export const faces: FeatureType = [
   { name: "face_1_1", value: face_1_1 },
   { name: "face_1_2", value: face_1_2 },
   { name: "face_2_1", value: face_2_1 },
   { name: "face_2_2", value: face_2_2 },
+  { name: "face_10_1", value: face_10_1 },
   { name: "face_3_1", value: face_3_1 },
   { name: "face_4_1", value: face_4_1 },
   { name: "face_4_2", value: face_4_2 },
@@ -59,6 +61,7 @@ export const eyes = [
   { name: "eye_6", value: eye_6 },
   { name: "none", value: "" },
 ];
+
 import eyebrow_1_1 from "../assets/features/eyebrow_1_1.png";
 import eyebrow_1_2 from "../assets/features/eyebrow_1_2.png";
 import eyebrow_2_1 from "../assets/features/eyebrow_2_1.png";
@@ -74,6 +77,7 @@ export const eyebrows = [
   { name: "eyebrow_3_1", value: eyebrow_3_1 },
   { name: "none", value: "" },
 ];
+
 import mouth_1 from "../assets/features/mouth_1.png";
 import mouth_2 from "../assets/features/mouth_2.png";
 import mouth_3 from "../assets/features/mouth_3.png";
@@ -85,6 +89,7 @@ export const mouths = [
   { name: "mouth_4", value: mouth_4 },
   { name: "none", value: "" },
 ];
+
 import nose1 from "../assets/features/nose_1.png";
 import nose2 from "../assets/features/nose_2.png";
 import nose3 from "../assets/features/nose_3.png";
@@ -96,15 +101,23 @@ export const noses = [
   { name: "nose4", value: nose4 },
   { name: "none", value: "" },
 ];
+
 import beard_1_1 from "../assets/features/beard_1_1.png";
 import beard_1_2 from "../assets/features/beard_1_2.png";
 import beard_2_1 from "../assets/features/beard_2_1.png";
 import beard_2_2 from "../assets/features/beard_2_2.png";
-import { ReactElement } from "react";
 export const beards = [
   { name: "beard_1_1", value: beard_1_1 },
   { name: "beard_1_2", value: beard_1_2 },
   { name: "beard_2_1", value: beard_2_1 },
   { name: "beard_2_2", value: beard_2_2 },
+  { name: "none", value: "" },
+];
+
+import gonghexinchun from "../assets/seasons/gonghexinchun.png";
+import snake from "../assets/seasons/snake.png";
+export const seasons = [
+  { name: "gonghexinchun", value: gonghexinchun },
+  { name: "snake", value: snake },
   { name: "none", value: "" },
 ];

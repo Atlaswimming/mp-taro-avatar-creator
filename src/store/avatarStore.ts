@@ -10,6 +10,7 @@ import {
   mouths,
   noses,
   beards,
+  seasons,
 } from "src/constants/features";
 
 type offset = {
@@ -28,6 +29,8 @@ type Features = {
   mouth_shape?: string;
   nose_shape?: string;
   beard_shape?: string;
+  season_shape?: string;
+  decoration_shape?: string;
 };
 type State = {
   history: Array<{ features: Features }>;
@@ -42,6 +45,8 @@ type State = {
     mouth_shape: offset;
     nose_shape: offset;
     beard_shape: offset;
+    season_shape: offset;
+    decoration_shape: offset;
   };
   currentFeature?: string;
   currentFeatureType?: string;
@@ -78,6 +83,8 @@ const initialFeatures: Features = {
   mouth_shape: mouths[0].name,
   nose_shape: noses[0].name,
   beard_shape: "none",
+  season_shape: "none",
+  decoration_shape: "none",
 };
 
 const initialFeaturesOffset = {
@@ -87,6 +94,8 @@ const initialFeaturesOffset = {
   mouth_shape: defaultFeatureOffset,
   nose_shape: defaultFeatureOffset,
   beard_shape: defaultFeatureOffset,
+  season_shape: defaultFeatureOffset,
+  decoration_shape: defaultFeatureOffset,
 };
 
 const initialState: State = {
@@ -106,7 +115,7 @@ export const useAvatarStore = create<State & StateActions>((set, get) => ({
   saveToHistory: () => {
     const { history, currentStep, features } = get();
     const newHistory = history.slice(0, currentStep + 1);
-    if (newHistory.length > 3) {
+    if (newHistory.length > 30) {
       newHistory.shift();
     }
     set({
@@ -182,6 +191,7 @@ export const useAvatarStore = create<State & StateActions>((set, get) => ({
         nose_shape: noses[Math.floor(Math.random() * noses.length)].name,
         // beard_shape: beards[Math.floor(Math.random() * beards.length)].name,
         beard_shape: "none",
+        season_shape: seasons[Math.floor(Math.random() * seasons.length)].name,
       },
       featuresOffset: initialFeaturesOffset,
     });
