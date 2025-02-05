@@ -11,7 +11,6 @@ export const FeatureRender = (
   shape?: string
 ) => {
   const { setFeature, currentFeature, setCurrentFeature } = useAvatarStore();
-
   return (
     <>
       {title && (

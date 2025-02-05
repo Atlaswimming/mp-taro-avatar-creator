@@ -2,16 +2,24 @@ import { create } from "zustand";
 import { colorsPalette1 } from "src/constants/colorPalettes";
 import { mockFeatures } from "../data/mockFeatures";
 import {
-  shapes,
+  beards as normalBeards,
+  eyebrows as normalEyebrows,
+  eyes as normalEyes,
+  faces as normalFaces,
+  mouths as normalMouths,
+  noses as normalNoses,
   borders,
-  faces,
-  eyes,
-  eyebrows,
-  mouths,
-  noses,
-  beards,
+  shapes,
   seasons,
 } from "src/constants/features";
+import {
+  eyebrows as abstractEyebrows,
+  eyes as abstractEyes,
+  faces as abstractFaces,
+  mouths as abstractMouths,
+  noses as abstractNoses,
+  decoration as abstractDecoration,
+} from "src/constants/abstractFeatures";
 
 type offset = {
   x: number;
@@ -37,6 +45,7 @@ type State = {
   currentStep: number;
   isFlipped: boolean;
   isPremium: boolean;
+  type: "abstract" | "";
   features: Features;
   featuresOffset: {
     face_shape: offset;
@@ -72,16 +81,43 @@ const defaultFeatureOffset = {
   zoom: 1,
 };
 
+// const initialFeatures: Features = {
+//   shape_key: "rounded",
+//   shape_color: "rgba(255, 255, 255, 1)",
+//   border_type: "none",
+//   border_color: "rgba(255, 255, 255, 1)",
+//   face_shape: faces[0].name,
+//   eye_shape: eyes[0].name,
+//   eyebrow_shape: eyebrows[0].name,
+//   mouth_shape: mouths[0].name,
+//   nose_shape: noses[0].name,
+//   beard_shape: "none",
+//   season_shape: "none",
+//   decoration_shape: "none",
+// };
+
+let faces, eyes, eyebrows, mouths, noses, beards, decorations;
+
+beards = normalBeards;
+faces = abstractFaces;
+eyes = abstractEyes;
+eyebrows = abstractEyebrows;
+mouths = abstractMouths;
+noses = abstractNoses;
+decorations = abstractDecoration;
+
 const initialFeatures: Features = {
-  shape_key: "rounded",
-  shape_color: "rgba(255, 255, 255, 1)",
-  border_type: "none",
-  border_color: "rgba(255, 255, 255, 1)",
-  face_shape: faces[0].name,
-  eye_shape: eyes[0].name,
-  eyebrow_shape: eyebrows[0].name,
-  mouth_shape: mouths[0].name,
-  nose_shape: noses[0].name,
+  shape_key: shapes[Math.floor(Math.random() * shapes.length)],
+  shape_color:
+    colorsPalette1[Math.floor(Math.random() * colorsPalette1.length)],
+  border_type: borders[Math.floor(Math.random() * borders.length)],
+  border_color:
+    colorsPalette1[Math.floor(Math.random() * colorsPalette1.length)],
+  face_shape: faces[Math.floor(Math.random() * faces.length)].name,
+  eye_shape: eyes[Math.floor(Math.random() * (eyes.length - 1))].name,
+  eyebrow_shape: "none",
+  mouth_shape: mouths[Math.floor(Math.random() * (mouths.length - 1))].name,
+  nose_shape: "none",
   beard_shape: "none",
   season_shape: "none",
   decoration_shape: "none",
@@ -103,6 +139,7 @@ const initialState: State = {
   currentStep: 0,
   isFlipped: false,
   isPremium: false,
+  type: "abstract",
   features: initialFeatures,
   featuresOffset: initialFeaturesOffset,
   currentFeature: initialFeatures.eye_shape,
@@ -184,14 +221,16 @@ export const useAvatarStore = create<State & StateActions>((set, get) => ({
           colorsPalette1[Math.floor(Math.random() * colorsPalette1.length)],
         face_shape: faces[Math.floor(Math.random() * faces.length)].name,
         eye_shape: eyes[Math.floor(Math.random() * (eyes.length - 1))].name,
-        eyebrow_shape:
-          eyebrows[Math.floor(Math.random() * eyebrows.length)].name,
+        eyebrow_shape: "none",
         mouth_shape:
           mouths[Math.floor(Math.random() * (mouths.length - 1))].name,
-        nose_shape: noses[Math.floor(Math.random() * noses.length)].name,
+        nose_shape: "none",
         // beard_shape: beards[Math.floor(Math.random() * beards.length)].name,
         beard_shape: "none",
-        season_shape: seasons[Math.floor(Math.random() * seasons.length)].name,
+        season_shape:
+          seasons.length > 0
+            ? seasons[Math.floor(Math.random() * seasons.length)].name
+            : "none",
       },
       featuresOffset: initialFeaturesOffset,
     });

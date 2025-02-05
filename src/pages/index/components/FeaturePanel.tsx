@@ -1,16 +1,24 @@
 import { Image, ScrollView, Text, View } from "@tarojs/components";
 import { useState } from "react";
 import {
-  beards,
+  beards as normalBeards,
+  eyebrows as normalEyebrows,
+  eyes as normalEyes,
+  faces as normalFaces,
+  mouths as normalMouths,
+  noses as normalNoses,
   borders,
-  eyebrows,
-  eyes,
-  faces,
-  mouths,
-  noses,
   shapes,
   seasons,
 } from "src/constants/features";
+import {
+  eyebrows as abstractEyebrows,
+  eyes as abstractEyes,
+  faces as abstractFaces,
+  mouths as abstractMouths,
+  noses as abstractNoses,
+  decoration as abstractDecoration,
+} from "src/constants/abstractFeatures";
 import Forbid from "../../../assets/icons/forbid.svg";
 import Selected from "../../../assets/icons/selected.svg";
 import {
@@ -60,6 +68,7 @@ const colorsPaletteRender = (
 
 export const FeaturePanel = () => {
   const {
+    type,
     setFeature,
     features: {
       shape_color,
@@ -79,13 +88,38 @@ export const FeaturePanel = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [viewId, setViewId] = useState<string>("");
 
-  const tabItems = [
-    "季节限定",
-    "背景",
-    "脸型",
-    "五官",
-    // "饰品", "服饰"
-  ];
+  let tabItems;
+  if (type === "abstract") {
+    tabItems = ["季节限定", "背景", "脸型", "五官", "装饰"];
+  } else {
+    tabItems = [
+      "季节限定",
+      "背景",
+      "脸型",
+      "五官",
+      // "饰品", "服饰"
+    ];
+  }
+  let faces, eyes, eyebrows, mouths, noses, beards, decorations;
+  switch (type) {
+    case "":
+      faces = normalFaces;
+      eyes = normalEyes;
+      eyebrows = normalEyebrows;
+      mouths = normalMouths;
+      noses = normalNoses;
+      beards = normalBeards;
+      break;
+    default:
+    case "abstract":
+      faces = abstractFaces;
+      eyes = abstractEyes;
+      eyebrows = abstractEyebrows;
+      mouths = abstractMouths;
+      noses = abstractNoses;
+      decorations = abstractDecoration;
+      break;
+  }
 
   const handleScroll = (event) => {
     const scrollTop = event.detail.scrollTop;
@@ -126,7 +160,7 @@ export const FeaturePanel = () => {
         })}
       </ScrollView>
       <ScrollView
-        className="text-white w-[88vw] h-full grow-1"
+        className="text-white w-[84vw] h-full grow-1 pr-2"
         id="featurePannelScrollView"
         scrollY
         enhanced
@@ -187,7 +221,7 @@ export const FeaturePanel = () => {
                     })}
                   </View>
 
-                  <View className="w-full h-4 flex flex-no-wrap justify-center my-1">
+                  <View className="w-full h-4 flex flex-no-wrap justify-center my-1 pr-1">
                     {colorsPaletteRender(
                       colorsPalettes[0],
                       shape_color || colorsPalettes[0][0],
@@ -240,7 +274,7 @@ export const FeaturePanel = () => {
                       );
                     })}
                   </View>
-                  <View className="w-full h-4 flex flex-no-wrap justify-center my-1">
+                  <View className="w-full h-4 flex flex-no-wrap justify-center my-1 pr-1">
                     {colorsPaletteRender(
                       colorsPalettes[0],
                       border_color || colorsPalettes[0][0],
@@ -258,19 +292,30 @@ export const FeaturePanel = () => {
               )}
               {item === "五官" && (
                 <View className="w-full min-h-16 flex flex-col">
-                  {FeatureRender(
-                    "眉毛",
-                    eyebrows,
-                    "eyebrow_shape",
-                    eyebrow_shape
-                  )}
                   {FeatureRender("眼睛", eyes, "eye_shape", eye_shape)}
-
-                  {FeatureRender("鼻子", noses, "nose_shape", nose_shape)}
 
                   {FeatureRender("嘴巴", mouths, "mouth_shape", mouth_shape)}
 
-                  {FeatureRender("胡子", beards, "beard_shape", beard_shape)}
+                  {item !== "abstract" &&
+                    eyebrows &&
+                    FeatureRender(
+                      "眉毛",
+                      eyebrows,
+                      "eyebrow_shape",
+                      eyebrow_shape
+                    )}
+
+                  {FeatureRender("鼻子", noses, "nose_shape", nose_shape)}
+
+                  {item !== "abstract" &&
+                    beards &&
+                    FeatureRender("胡子", beards, "beard_shape", beard_shape)}
+                </View>
+              )}
+              {item === "装饰" && (
+                <View className="w-full min-h-16 flex justify-start overflow-x-scroll">
+                  {decorations &&
+                    FeatureRender("", decorations, "decoration_shape", "none")}
                 </View>
               )}
             </View>

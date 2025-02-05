@@ -18,7 +18,7 @@ const Index = () => {
       </View>
 
       <View className="flex max-h-[50vh] mt-[2vh]">
-        <FeaturePanel />
+        <FeaturePanel type="abstract" />
       </View>
       {/* <View className="w-full fixed top-[44vh] max-h-[8vh]">
         <Controls />

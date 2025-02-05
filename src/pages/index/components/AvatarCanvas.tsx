@@ -183,6 +183,9 @@ export const AvatarCanvas = ({ type }) => {
           const currentDecoration = abstractDecoration.find(
             (type) => type.name === decoration_shape
           );
+          const currentSeason = seasons.find(
+            (type) => type.name === season_shape
+          );
           Promise.all([
             currentFace && loadImg(currentFace?.value, canvas),
             currentEyebrow && loadImg(currentEyebrow?.value, canvas),
@@ -190,6 +193,7 @@ export const AvatarCanvas = ({ type }) => {
             currentNose && loadImg(currentNose?.value, canvas),
             currentMouth && loadImg(currentMouth?.value, canvas),
             currentDecoration && loadImg(currentDecoration?.value, canvas),
+            currentSeason && loadImg(currentSeason?.value, canvas),
           ]).then(
             ([
               face,
@@ -198,6 +202,7 @@ export const AvatarCanvas = ({ type }) => {
               nose = null,
               mouth = null,
               decoration = null,
+              season = null,
             ]) => {
               const baseSize = 150;
 
@@ -253,6 +258,19 @@ export const AvatarCanvas = ({ type }) => {
                 const X = center - size / 2 + x;
                 const Y = center - size / 2 + y + 8;
                 ctx.drawImage(decoration, X, Y, size, size);
+              }
+
+              // Draw 季节限定
+              if (season && season_shape !== "none") {
+                const { x, y, zoom } = featuresOffset.season_shape;
+                const size = baseSize * zoom;
+                let seasonOffset = 20;
+                if (currentSeason?.name === "snake") {
+                  seasonOffset = -20;
+                }
+                const X = center - size / 2 + x - seasonOffset;
+                const Y = center - size / 2 + y - seasonOffset;
+                ctx.drawImage(season, X, Y, size, size);
               }
             }
           );
